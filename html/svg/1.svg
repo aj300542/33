@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <mask id="cutout">
+        <polygon points="237 471, 144 514, 65 346, 150 306, 150 31, 107 31, 107 10, 293 10, 293 31, 237 31, 237 471"
+            fill="white" />
+        <polygon points="200 31, 200 454, 217 446, 217 31, 200 31" fill="black" />
+        <polygon points="150 340, 106 361, 150 453, 150 340" fill="black" />
+    </mask>
+</svg>

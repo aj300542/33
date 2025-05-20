@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: absolute;
+        }
+
+        /* 保持 SVG 结构不变 */
+        svg {
+            transform: scaleY(-1);
+
+            z-index: 5;
+            /* 确保 SVG 在下层 */
+            
+        }
+
+        #layer1 iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+
+        .light {
+
+            fill: rgb(255, 255, 255);
+            filter: url(#glow);
+            z-index: 99; 
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="400" height="600" viewBox="0 0 400 600">
+        <!-- 定义遮罩 -->
+        <defs>
+            <mask id="cutout">
+                <!-- 第一条线：填充白色 (可见区域) -->
+                <polygon
+                    points="200 399, 200 364, 200 290, 58 432, 58 487, 314 487, 296 469, 303 461, 374 532, 366 539, 200 539, 5 539, 5 498, 5 487, 5 428, 30 428, 30 487, 47 487, 47 428, 200 275, 200 84, 181 65, 23 223, 5 205, 200 10, 394 205, 200 399"
+                    fill="white" />
+                <!-- 第二、第三条线：填充黑色 (遮罩区域) -->
+                <polygon points="341 514, 30 514, 30 498, 47 498, 58 498, 200 498, 325 498, 341 514" fill="black" />
+                <polygon points="210 354, 210 95, 233 117, 233 331, 210 354" fill="black" />
+                <polygon points="258 306, 258 142, 340 224, 258 306" fill="black" />
+                <polygon points="200 46, 359 205, 347 217, 188 58, 200 46" fill="black" />
+
+            </mask>
+        </defs>
+
+        <!-- 应用遮罩，让金色填充第一条线，去除内部区域 -->
+        <polygon
+            points="200 399, 200 364, 200 290, 58 432, 58 487, 314 487, 296 469, 303 461, 374 532, 366 539, 200 539, 5 539, 5 498, 5 487, 5 428, 30 428, 30 487, 47 487, 47 428, 200 275, 200 84, 181 65, 23 223, 5 205, 200 10, 394 205, 200 399"
+            fill="gold" stroke="none" stroke-width="2" mask="url(#cutout)" />
+      <defs>
+            <!-- 定义光晕效果 -->
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+
+            <!-- 定义路径 -->
+            <path id="lightPath"
+                d="M200 399, 200 364, 200 290, 58 432, 58 487, 314 487, 296 469, 303 461, 374 532, 366 539, 200 539, 5 539, 5 498, 5 487, 5 428, 30 428, 30 487, 47 487, 47 428, 200 275, 200 84, 181 65, 23 223, 5 205, 200 10, 394 205, 200 399 Z" fill="none" />
+        </defs>
+
+        <!-- 电流路径 -->
+        <polygon points="200 399, 200 364, 200 290, 58 432, 58 487, 314 487, 296 469, 303 461, 374 532, 366 539, 200 539, 5 539, 5 498, 5 487, 5 428, 30 428, 30 487, 47 487, 47 428, 200 275, 200 84, 181 65, 23 223, 5 205, 200 10, 394 205, 200 399"
+            fill="none" stroke="beige" stroke-width="1" />
+
+        <!-- 电流发光点 (lighting) -->
+        <path id="lightPath"
+            d="M200 399, 200 364, 200 290, 58 432, 58 487, 314 487, 296 469, 303 461, 374 532, 366 539, 200 539, 5 539, 5 498, 5 487, 5 428, 30 428, 30 487, 47 487, 47 428, 200 275, 200 84, 181 65, 23 223, 5 205, 200 10, 394 205, 200 399 Z"
+            stroke="white" stroke-width="1" fill="none">
+            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="8s" repeatCount="indefinite" />
+        </path>
+        <defs>
+            <clipPath id="clipLight">
+                <path
+                    d="M200 399, 200 364, 200 290, 58 432, 58 487, 314 487, 296 469, 303 461, 374 532, 366 539, 200 539, 5 539, 5 498, 5 487, 5 428, 30 428, 30 487, 47 487, 47 428, 200 275, 200 84, 181 65, 23 223, 5 205, 200 10, 394 205, 200 399 Z"
+                    stroke="white" stroke-width="2" fill="none" />
+            </clipPath>
+        </defs>
+
+        <defs>
+            <radialGradient id="starGradient" cx="50%" cy="50%" r="100%">
+                <stop offset="0%" stop-color="white" stop-opacity="1" />
+                <stop offset="50%" stop-color="white" stop-opacity="0.001" />
+                <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+            </radialGradient>
+        </defs>
+
+        <circle id="lighting" r="38" fill="url(#starGradient)">
+            <animateMotion dur="60s" repeatCount="indefinite">
+                <mpath href="#lightPath" />
+            </animateMotion>
+        </circle>
+        <g stroke="white" stroke-width="2" fill="none" stroke-dasharray="200" stroke-dashoffset="800">
+            <path
+                d="M200 399, 200 364, 200 290, 58 432, 58 487, 314 487, 296 469, 303 461, 374 532, 366 539, 200 539, 5 539, 5 498, 5 487, 5 428, 30 428, 30 487, 47 487, 47 428, 200 275, 200 84, 181 65, 23 223, 5 205, 200 10, 394 205, 200 399 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M341 514, 30 514, 30 498, 47 498, 58 498, 200 498, 325 498, 341 514 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M210 354, 210 95, 233 117, 233 331, 210 354 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M258 306, 258 142, 340 224, 258 306 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M200 46, 359 205, 347 217, 188 58, 200 46 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>            
+        </g>
+
+    </svg>
+</body>
+
+</html>

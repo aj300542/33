@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: absolute;
+        }
+
+        /* 保持 SVG 结构不变 */
+        svg {
+            transform: scaleY(-1);
+
+            z-index: 5;
+            /* 确保 SVG 在下层 */
+
+        }
+
+        #layer1 iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+
+        .light {
+
+            fill: rgb(255, 255, 255);
+            filter: url(#glow);
+            z-index: 99;
+            mix-blend-mode: screen;
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="400" height="600" viewBox="0 0 400 600">
+        <!-- 定义遮罩 -->
+        <defs>
+            <mask id="cutout">
+                <!-- 第一条线：填充白色 (可见区域) -->
+                <polygon
+                    points="390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219"
+                    fill="white" />
+                <!-- 第二、第三条线：填充黑色 (遮罩区域) -->
+                <polygon points="258 439, 258 219, 73 219, 258 439" fill="black" />
+                <polygon points="285 21, 268 21, 268 452, 285 472, 285 21" fill="black" />
+                <polygon points="38 177, 52 194, 258 194, 258 177, 38 177" fill="black" />
+                <polygon points="380 194, 380 177, 310 177, 310 194, 380 194" fill="black" />
+
+            </mask>
+        </defs>
+
+        <!-- 应用遮罩，让金色填充第一条线，去除内部区域 -->
+        <polygon
+            points="390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219"
+            fill="gold" stroke="none" stroke-width="2" mask="url(#cutout)" />
+        <defs>
+            <!-- 定义光晕效果 -->
+            <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+
+            <!-- 定义路径 -->
+            <path id="lightPath"
+                d="M390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219 Z"
+                fill="none" />
+        </defs>
+
+        <!-- 电流路径 -->
+        <polygon
+            points="390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219"
+            fill="none" stroke="beige" stroke-width="1" />
+
+        <!-- 电流发光点 (lighting) -->
+        <path id="lightPath"
+            d="M390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219 Z"
+            stroke="white" stroke-width="1" fill="none">
+            <animate attributeName="stroke-dashoffset" from="100" to="0" dur="8s" repeatCount="indefinite" />
+        </path>
+        <defs>
+            <clipPath id="clipLight">
+                <path
+                    d="M390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219 Z"
+                    stroke="white" stroke-width="2" fill="none" />
+            </clipPath>
+        </defs>
+
+        <defs>
+            <radialGradient id="starGradient" cx="50%" cy="50%" r="100%">
+                <stop offset="0%" stop-color="white" stop-opacity="1" />
+                <stop offset="50%" stop-color="white" stop-opacity="0.001" />
+                <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+            </radialGradient>
+        </defs>
+
+        <circle id="lighting" r="38" fill="url(#starGradient)">
+            <animateMotion dur="60s" repeatCount="indefinite">
+                <mpath href="#lightPath" />
+            </animateMotion>
+        </circle>
+        <g stroke="white" stroke-width="2" fill="none" stroke-dasharray="200" stroke-dashoffset="800">
+            <path
+                d="M390 219, 380 219, 310 219, 310 510, 285 510, 5 177, 5 167, 258 167, 258 21, 250 21, 250 10, 285 10, 310 10, 310 167, 380 167, 380 159, 390 159, 390 219 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M258 439, 258 219, 73 219, 258 439 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M285 21, 268 21, 268 452, 285 472, 285 21 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M38 177, 52 194, 258 194, 258 177, 38 177 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+            <path d="M380 194 L380 177 L310 177 L310 194 Z">
+                <animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite" />
+            </path>
+        </g>
+
+    </svg>
+</body>
+
+</html>
+
+</html>
