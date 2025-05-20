@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>33 expedition eskier</title>
+    <title>33</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="script/wakelock.js"></script>
     <link rel="shortcut icon" href="eskier.ico">
@@ -111,9 +111,11 @@
             width: 100vw;
             height: 100vh;
         }
+
         html {
             background: linear-gradient(180deg, #3e2723, #463129, #4e3e39);
         }
+
         body {
             display: flex;
             flex-direction: column;
@@ -122,7 +124,6 @@
             min-height: 100vh;
             font-family: Arial, sans-serif;
             padding: 0%;
-            background: linear-gradient(180deg, #3e2723, #463129, #4e3e39);
         }
 
         .iframe-container {
@@ -134,7 +135,7 @@
         }
 
         .iframe-container iframe {
-            width: 120%;
+            width: 100%;
             height: 100vh;
             transform: scale(1);
             border: 0px solid black;
@@ -151,12 +152,12 @@
             animation: move 42.5s infinite;
         }
 
-        .iframe-container iframe:nth-child(3) {
-            animation: move 39s infinite;
+        .iframe-container iframe:nth-child(4) {
+            animation: move 38s infinite;
         }
 
-        .iframe-container iframe:nth-child(4) {
-            animation: move 43.5s infinite;
+        .iframe-container iframe:nth-child(5) {
+            animation: move 43.5s infinite !important;
         }
 
         @keyframes move {
@@ -165,7 +166,7 @@
             }
 
             50% {
-                transform: translateY(166px) translateX(64px);
+                transform: translateY(-8vh) translateX(-5vh);
             }
 
             100% {
@@ -193,7 +194,7 @@
         #aboutme,
         #fullscreenbutt {
             position: absolute;
-            top: 85.5vh;
+            bottom: 25.5vh;
             padding: 1vh;
             font-size: 1.5vh;
             background-color: transparent;
@@ -241,14 +242,14 @@
         }
 
         iframe:nth-child(2) {
-            margin-right: 5vw;
+            margin-right: 0vw;
             /* 设置小时和分钟之间的间距 */
         }
 
         .spacer {
             flex-grow: 100;
             /* 让它占据可用空间 */
-            width: 90vw;
+            width: 175vw;
             /* 可以调整大小 */
         }
 
@@ -320,6 +321,7 @@
 </head>
 
 <body>
+
     <div id="content">
         <div class="iframe-nixie">
             <iframe id="nixieframe" src="nixie.html"></iframe>
