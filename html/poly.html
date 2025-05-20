@@ -36,7 +36,7 @@
 
         .sv {
 
-            background: #8f826a;
+            background: #bda627;
         }
 
         polygon {
@@ -44,10 +44,6 @@
             stroke-dasharray: 250;
             /* 设置描边长度 */
         }
-
-
-
-
     </style>
 </head>
 
@@ -296,6 +292,19 @@
         <polygon id="sc-12" data-number="60"
             points="220, 381 217, 380 214, 379 211, 379 210, 379 209, 378 205, 378 201, 377 198, 376 197, 375 198, 374 199, 372 199, 370 200, 370 202, 371 207, 372 210, 373 212, 373 212, 373 215, 374 218, 375 221, 375 222, 375 225, 376 229, 377 233, 378 234, 378 234, 380 233, 382 233, 384 232, 384 228, 382 224, 381 220, 381"
             fill="none" stroke="green" />
+        <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                <feComponentTransfer>
+                    <feFuncA type="linear" slope="0.25" /> <!-- 透明度设置 -->
+                </feComponentTransfer>
+                <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+
     </svg>
     <script>
         function updateColors() {
@@ -330,13 +339,14 @@
 
                 // 先清除旧的动画，避免累积
                 let oldAnimate = polygon.querySelector("animate");
+
                 if (oldAnimate) {
                     oldAnimate.remove();
                 }
 
                 // 检测是否是小时映射，同时也是当前分钟（1:05, 2:10...）
                 if (number === hourMap[currentHours] && number === currentMinutes) {
-                    polygon.setAttribute("fill", "yellow"); 
+                    polygon.setAttribute("fill", "yellow");
                     polygon.setAttribute("stroke", "white");
                     polygon.innerHTML += '<animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite"/>';
                 }
@@ -349,14 +359,14 @@
                 else if (number === currentMinutes) {
                     polygon.setAttribute("fill", "#6fd1d4");
                     polygon.setAttribute("stroke", "white");
-
+                    polygon.setAttribute("filter", "url(#glow)"); // 添加发光效果
                     polygon.innerHTML += '<animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite"/>';
                 }
                 // 仅当前小时填色
                 else if (number === hourMap[currentHours]) {
                     polygon.setAttribute("fill", "#29bdc2");
                     polygon.setAttribute("stroke", "white");
-
+                    polygon.setAttribute("filter", "url(#glow)"); // 添加发光效果
                     polygon.innerHTML += '<animate attributeName="stroke-dashoffset" from="800" to="0" dur="10s" repeatCount="indefinite"/>';
                 }
                 // 当前小时邻近图形 **仅流动描边，不填色**
