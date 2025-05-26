@@ -8,7 +8,6 @@
     <link rel="shortcut icon" href="eskier.ico">
 
     <style>
-
         #content {
             display: flex;
             justify-content: center;
@@ -21,23 +20,6 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-        }
-
-        #content::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background: rgba(0, 0, 0, 0.1);
-            /* 半透明的颜色层 */
-            backdrop-filter: blur(0px);
-            /* 模糊滤镜 */
-        }
-
-        .no-blur::after {
-            backdrop-filter: none;
         }
     </style>
     <style>
@@ -212,6 +194,17 @@
             transform: translate(-50%, -50%);
         }
 
+        .imgeskier {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vh;
+            height: 100vh;
+            transform: translate(-50%, -50%);
+            z-index: 99;
+            cursor: pointer;
+        }
+
         .img {
             position: absolute;
             top: 50%;
@@ -219,10 +212,9 @@
             width: 100vh;
             height: 100vh;
             pointer-events: none;
-            z-index: 99;
+            z-index: 100;
             background: url('html/img/eskier.png') no-repeat;
             background-size: 39.5%;
-            /* 缩小到一半 */
             background-position: center center;
             opacity: 0.85;
             transform: translate(-50%, -50%);
@@ -235,13 +227,30 @@
             width: 100vh;
             height: 100vh;
             pointer-events: none;
-            z-index: 99;
+            z-index: 101;
             background: url('html/img/eskier-2.png') no-repeat;
             background-size: 45%;
-            /* 缩小到一半 */
             background-position: center center;
             opacity: 0.95;
             transform: translate(-50%, -50%);
+        }
+
+        .imgundam {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vh;
+            height: 100vh;
+            display: none;
+            z-index: 99;
+            background-size: contain;
+            /* 让图片适应容器 */
+            background-position: center center;
+            background-repeat: no-repeat;
+            /* 取消平铺 */
+            opacity: 0.85;
+            transform: translate(-50%, -50%) scale(0.44);
+            cursor: pointer;
         }
 
         .iframe-nixie {
@@ -274,8 +283,6 @@
         <div class="iframe-nixie">
             <iframe id="nixieframe" src="nixie.html"></iframe>
         </div>
-        <div class="img"></div>
-        <div class="img2"></div>
         <div class="overlay"></div>
         <iframe id="eskier" src="html/poly.html"></iframe>
         <div class="iframe-container">
@@ -285,7 +292,43 @@
             <iframe id="sz-minutes-tens" src="html/0.html"></iframe>
             <iframe id="sz-minutes-ones" src="html/0.html"></iframe>
         </div>
+        <div class="imgeskier" onclick="toggleImage()">
+            <div class="img"></div>
+            <div class="img2"></div>
+        </div>
+        <div class="imgundam" onclick="toggleImage()"></div>
     </div>
+
+
+    <script>
+        let images = [
+            "html/img/gundam.png",
+            "html/img/longjuan.png",
+            "html/img/qiyu.png",
+            "html/img/xinzhe.png",
+            "html/img/luohan.png"
+        ];
+        let currentIndex = 0;
+
+        function toggleImage() {
+            let skier = document.querySelector(".imgeskier");
+            let undam = document.querySelector(".imgundam");
+
+            if (currentIndex < images.length) {
+                skier.style.display = "none"; // 隐藏 imgeskier
+                undam.style.display = "block"; // 显示 imgundam
+                undam.style.backgroundImage = `url('${images[currentIndex]}')`;
+                currentIndex++;
+            } else {
+                skier.style.display = "block"; // 重新显示 imgeskier
+                undam.style.display = "none"; // 隐藏 imgundam
+                currentIndex = 0; // 重置索引
+            }
+        }
+
+        // 初始化第一个图片
+        document.querySelector(".imgundam").style.backgroundImage = `url('${images[0]}')`;
+    </script>
     <button id="fullscreenbutt" onclick="toggleFullScreen()"><span style="color: #fb7c00">fullsreen</span></button>
     <a href="https://aj300542.github.io/">
         <button id="aboutme"><span style="color:#fb7c00">aj300</span></button>
@@ -298,28 +341,35 @@
 
         function toggleFullScreen() {
             var elem = document.getElementById("content");
-
+            var skier = document.querySelector(".imgeskier");
 
             if (!document.fullscreenElement) {
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen();
-                } else if (elem.mozRequestFullScreen) { /* Firefox */
+                } else if (elem.mozRequestFullScreen) {
                     elem.mozRequestFullScreen();
-                } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                } else if (elem.webkitRequestFullscreen) {
                     elem.webkitRequestFullscreen();
-                } else if (elem.msRequestFullscreen) { /* IE/Edge */
+                } else if (elem.msRequestFullscreen) {
                     elem.msRequestFullscreen();
                 }
+
+                // **确保显示 `.imgeskier`**
+                skier.style.display = "block";
+                skier.style.zIndex = "999"; // 让它浮动在最前
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { /* Firefox */
+                } else if (document.mozCancelFullScreen) {
                     document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                } else if (document.webkitExitFullscreen) {
                     document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { /* IE/Edge */
+                } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
+
+                // **退出全屏后隐藏 `.imgeskier`**
+                skier.style.display = "none";
             }
         }
     </script>
